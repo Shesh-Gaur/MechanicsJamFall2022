@@ -18,6 +18,6 @@ public class CameraMovement : MonoBehaviour
     void Update()
     {
         Vector3 avgPos = ((player2.transform.position - player1.transform.position)/ 2.0f) + player1.transform.position;
-        transform.position = Vector3.Lerp(transform.position, new Vector3 (avgPos.x, heightOffset ,avgPos.z), 5.0f * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, new Vector3 (avgPos.x, avgPos.magnitude + heightOffset ,avgPos.z), 5.0f * Time.deltaTime);
     }
 }

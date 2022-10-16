@@ -14,14 +14,28 @@ public class RewindableObject : MonoBehaviour
     Rigidbody rb;
     Timer timeManager;
 
+    Vector3 startPos;
+    Quaternion startRot;
+
     // Start is called before the first frame update
     void Start()
     {
         timeManager = FindObjectOfType<Timer>();
         rb = GetComponent<Rigidbody>();
+        startPos = transform.position;
+        startRot = transform.rotation;
     }
 
-    // Update is called once per frame
+    void Update()
+    {
+        if (timeManager.didTimeFlip)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+    }
+
+        // Update is called once per frame
     void FixedUpdate()
     {
         if (!isRetroCausal)
@@ -34,7 +48,7 @@ public class RewindableObject : MonoBehaviour
                 myAngularVelocities.Insert(0, rb.angularVelocity);
 
             }
-            else if (myPositions.Count > 0)
+            else if (myPositions.Count > 1)
             {
                 transform.position = myPositions[0];
                 myPositions.RemoveAt(0);
@@ -47,6 +61,23 @@ public class RewindableObject : MonoBehaviour
 
                 rb.angularVelocity = myAngularVelocities[0];
                 myAngularVelocities.RemoveAt(0);
+            }
+            else if (myPositions.Count > 0)
+            {
+                transform.position = myPositions[0];
+
+                transform.rotation = myRotations[0];
+
+                rb.velocity = myVelocities[0];
+
+                rb.angularVelocity = myAngularVelocities[0];
+            }
+            else
+            {
+                transform.position = startPos;
+                transform.rotation = startRot;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
             }
         }
         else
@@ -59,7 +90,7 @@ public class RewindableObject : MonoBehaviour
                 myAngularVelocities.Insert(0, rb.angularVelocity);
 
             }
-            else if (myPositions.Count > 0)
+            else if (myPositions.Count > 1)
             {
                 transform.position = myPositions[0];
                 myPositions.RemoveAt(0);
@@ -72,6 +103,23 @@ public class RewindableObject : MonoBehaviour
 
                 rb.angularVelocity = myAngularVelocities[0];
                 myAngularVelocities.RemoveAt(0);
+            }
+            else if(myPositions.Count > 0)
+            {
+                transform.position = myPositions[0];
+
+                transform.rotation = myRotations[0];
+
+                rb.velocity = myVelocities[0];
+
+                rb.angularVelocity = myAngularVelocities[0];
+            }
+            else
+            {
+                transform.position = startPos;
+                transform.rotation = startRot;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
             }
         }
     }
